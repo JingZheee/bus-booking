@@ -202,10 +202,11 @@ class Booking{
                 int newFilled = bus->getFilled() + 1;
                 bus->setFilled(newFilled);
                 passenger->setBookedid(bookingId);
-                cout << "Your purchase was successful";
+                cout << "Your purchase was successful" << endl;
+                system("pause");
                 return true;
             } else {
-                cout << "The payment was fail. Please make the purchase again.";
+                cout << "The payment was fail. Please make the purchase again." << endl;
                 return false;
             }
             
@@ -250,6 +251,7 @@ void showSchedule(vector<Bus> &bus){
 }
 
 int mainPage(){
+    
     int selection;
     cout << "Please choose user : " << endl;
     cout << "Press 1 to enter as guest" << endl;
@@ -297,11 +299,14 @@ int main()
     bus.push_back(Bus("1/6/2023","P102","Johor","Penang", "10:00am","SYM187",40, 24, 80.50));
 
     main:
+        system("cls");
         selection = mainPage();
 
     if (selection == 1){
+        system("cls");
         selection = userPage();
         if(selection == 1){
+            system("cls");
             bool status;
             showSchedule(bus);
             cout << "\nPlease select the bus you want to buy:" << endl;
@@ -316,28 +321,35 @@ int main()
                 goto main;
             }
         } else if(selection == 2){
+            system("cls");
             for(int i = 0; i < bookings.size(); i++){
                 bookings[i].print();
             }
+            system("pause");
             goto main;
         }
         
     }else if (selection == 2) {
+        system("cls");
         while(!admin.logIn()){
             cout << "Wrong ID or password\n" << endl;
             cout << "Please enter again\n" << endl;
         } 
+        system("cls");
         selection = adminPage();
         if(selection == 1){
+            system("cls");
             showSchedule(bus);
             cout << "\n Press any key to return to main page or press 1 to exit";
             cin >> selection;
             if(selection == 1){
                 goto exit;
             } else {
+                system("cls");
                 goto main;
             }
         } else if(selection ==2){
+            system("cls");
             bus.push_back(admin.addBus());
             cout << "\nThe bus information is successfully added." << endl;
             goto main;
