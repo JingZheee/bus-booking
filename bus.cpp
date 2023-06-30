@@ -2,6 +2,7 @@
 #include <string>
 #include <iomanip>
 #include <vector>
+#include <array>
 using namespace std;
 
 class Bus{
@@ -15,9 +16,10 @@ class Bus{
         int filledSeats;
         string departTime;
         double price;
+        string busType;
 
     public:
-        Bus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0){
+        Bus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, string bt = "unknown"){
             date = d;
             busID = id;
             departureLocation = _departLocation;
@@ -27,6 +29,7 @@ class Bus{
             maxSeats = max;
             filledSeats = filled;
             price = p;
+            busType = bt;
         }
         void setBusID(string id){
             busID = id;
@@ -83,7 +86,9 @@ class Bus{
             return date;
         }
 
-
+        string getBusType(){
+            return busType;
+        }
 
         friend class Admin;
 
@@ -101,7 +106,7 @@ class PremiumBus : public Bus{
             seatType = s;
         }
         virtual void printAbout() = 0;
-        PremiumBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, string s = "noSeatType"){
+        PremiumBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, string s = "noSeatType", string bt = "unknown"){
             date = d;
             busID = id;
             departureLocation = _departLocation;
@@ -111,6 +116,7 @@ class PremiumBus : public Bus{
             maxSeats = max;
             filledSeats = filled;
             price = p;
+            busType = bt;
             seatType = s;
         }
     
@@ -128,7 +134,7 @@ class StandardBus : public Bus{
         void setDiscount(double d){
             discount = d;
         }
-        StandardBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, double dis = 0){
+        StandardBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, double dis = 0, string bt = "unknown"){
             date = d;
             busID = id;
             departureLocation = _departLocation;
@@ -138,6 +144,7 @@ class StandardBus : public Bus{
             maxSeats = max;
             filledSeats = filled;
             price = p;
+            busType = bt;
             discount = dis;
         }
     
@@ -146,13 +153,13 @@ class StandardBus : public Bus{
 
 class ExpressBus : public PremiumBus{
     private : 
-        string movies[2];
+        string movies[2] = {"Top Gun Maverick", "Cars 2"};
 
     public :
         string * getMovies(){
             return movies;
         }
-        void setMovies(string m[2]){
+        void setMovies(std::array<string,2> m){
             for(int i = 0; i < 2; i++){
                 movies[i] = m[i];
             }
@@ -160,7 +167,7 @@ class ExpressBus : public PremiumBus{
         void printAbout(){
             cout << "Express Bus is a premium class bus equipped with movies you can enjoy on the way to your destination!" << endl;
         }
-        ExpressBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0){
+        ExpressBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, std::array<string,2> m = {"movie1", "movie2"}, string bt = "unknown"){
             date = d;
             busID = id;
             departureLocation = _departLocation;
@@ -170,6 +177,8 @@ class ExpressBus : public PremiumBus{
             maxSeats = max;
             filledSeats = filled;
             price = p;
+            busType = bt;
+            setMovies(m);
         }
 };
 
@@ -187,7 +196,7 @@ class SonarBus : public PremiumBus{
         void printAbout(){
             cout << "Sonar Bus is a premium class bus equipped with a toilet to take away all of your inconveniences!" << endl;
         }
-        SonarBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, bool t = false){
+        SonarBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, bool t = false, string bt = "unknown"){
             date = d;
             busID = id;
             departureLocation = _departLocation;
@@ -198,6 +207,7 @@ class SonarBus : public PremiumBus{
             filledSeats = filled;
             price = p;
             toilet = t;
+            busType = bt;
         }
 };
 
@@ -245,6 +255,7 @@ class Admin {
             int filledSeats = 0;
             string departTime;
             double price;
+            int busTypeChoice;
 
             cout << "Enter the date for the bus: ";
             getline(cin, date);
@@ -262,6 +273,38 @@ class Admin {
             cin >> maxSeats;
             cout << "Enter the ticket price for the bus: ";
             cin >> price;
+            cout << "Choose the type of bus to add: " << endl;
+            cout << "[0] Standard Bus" << endl;
+            cout << "[1] Express Bus" << endl;
+            cout << "[2] Sonar Bus" << endl;
+            cout << "Choice : ";
+            cin >> busTypeChoice;
+            system("pause");
+            if(busTypeChoice == 0){
+                double discount;
+                cout << "Enter member discount for the ticket: ";
+                cin >> discount;
+                StandardBus newBus(date, busID, departureLocation, arrivalLocation, departTime, plateNum, maxSeats, filledSeats, price, discount, "Standard Bus");
+                return newBus;
+            }
+            else if(busTypeChoice == 1){
+                string movies[2];
+                for (int i = 0; i < 2; i++){
+                    cout << "Enter movie " << i+1 << " name: ";
+                    cin >> movies[i];
+                }
+                ExpressBus newBus(date, busID, departureLocation, arrivalLocation, departTime, plateNum, maxSeats, filledSeats, price, {"Top Gun : Maverick", "Cars 2"}, "Express Bus");
+                return newBus;
+            }
+            else if(busTypeChoice == 2){
+                bool toiletAvailability;
+                cout << "Is toilet available ?";
+                cout << "[0] No" << endl;
+                cout << "[1] Yes" << endl;
+                cin >> toiletAvailability;
+                SonarBus newBus(date, busID, departureLocation, arrivalLocation, departTime, plateNum, maxSeats, filledSeats, price, toiletAvailability, "Sonar Bus");
+                return newBus;
+            }
             Bus newBus(date, busID, departureLocation, arrivalLocation, departTime, plateNum, maxSeats, filledSeats, price);
             return newBus;
             
@@ -342,6 +385,7 @@ void showSchedule(vector<Bus> &bus){
             cout << "BUS SCHEDULE" << endl;
             cout << "---------------" << endl;
             cout << left << setw(5) << " ";
+            cout << left << setw(15) << "Name";
             cout << left << setw(15) << "Date";
             cout << left << setw(15) << "Departure";
             cout << left << setw(5) << " ";
@@ -351,6 +395,7 @@ void showSchedule(vector<Bus> &bus){
             cout << endl;
             for (int i = 0; i < bus.size() ; i++){
                 cout << left << setw(1) << "[" << right << setw(2) << i << left << setw(2) << "]";
+                cout << left << setw(15) << bus[i].getBusType();
                 cout << left << setw(15) << bus[i].getDate();
                 cout << left << setw(15) << bus[i].getDepartLocation();
                 cout << left << setw(5) << "->" ;
@@ -406,9 +451,9 @@ int main()
     int bookingId = 1;
     vector<Booking>bookings;
     vector<Bus>bus;
-    bus.push_back(StandardBus("31/5/2023","P100","Johor","Kuala Lumpur", "3:30pm","SYM187",40, 24, 35.50, 3));
-    bus.push_back(ExpressBus("2/6/2023","P101","Johor","Kelantan", "3:30pm","SYM187",45, 12, 70.50));
-    bus.push_back(SonarBus("1/6/2023","P102","Johor","Penang", "10:00am","SYM187",40, 24, 80.50, true));
+    bus.push_back(StandardBus("31/5/2023","P100","Johor","Kuala Lumpur", "3:30pm","SYM187",40, 24, 35.50, 3, "Standard Bus"));
+    bus.push_back(ExpressBus("2/6/2023","P101","Johor","Kelantan", "3:30pm","SYM187",45, 12, 70.50, {"Top Gun : Maverick", "Cars 2"}, "Express Bus"));
+    bus.push_back(SonarBus("1/6/2023","P102","Johor","Penang", "10:00am","SYM187",40, 24, 80.50, true, "Sonar Bus"));
 
     main:
         system("cls");
@@ -457,8 +502,8 @@ int main()
             if(selection == 1){
                 goto exit;
             } else {
-                system("cls");
                 goto main;
+                
             }
         } else if(selection ==2){
             system("cls");
