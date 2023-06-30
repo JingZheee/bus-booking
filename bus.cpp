@@ -89,6 +89,118 @@ class Bus{
 
 };
 
+class PremiumBus : public Bus{
+    private : 
+        string seatType = "Comfy Cushion Seats";
+
+    public :
+        string getSeatType(){
+            return seatType;
+        }
+        void setSeatType(string s){
+            seatType = s;
+        }
+        virtual void printAbout() = 0;
+        PremiumBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, string s = "noSeatType"){
+            date = d;
+            busID = id;
+            departureLocation = _departLocation;
+            arrivalLocation = arrival;
+            departTime = _departTime;
+            plateNum = plate;
+            maxSeats = max;
+            filledSeats = filled;
+            price = p;
+            seatType = s;
+        }
+    
+
+};
+
+class StandardBus : public Bus{
+    private : 
+        double discount;
+
+    public :
+        double getDiscount(){
+            return discount;
+        }
+        void setDiscount(double d){
+            discount = d;
+        }
+        StandardBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, double dis = 0){
+            date = d;
+            busID = id;
+            departureLocation = _departLocation;
+            arrivalLocation = arrival;
+            departTime = _departTime;
+            plateNum = plate;
+            maxSeats = max;
+            filledSeats = filled;
+            price = p;
+            discount = dis;
+        }
+    
+
+};
+
+class ExpressBus : public PremiumBus{
+    private : 
+        string movies[2];
+
+    public :
+        string * getMovies(){
+            return movies;
+        }
+        void setMovies(string m[2]){
+            for(int i = 0; i < 2; i++){
+                movies[i] = m[i];
+            }
+        }
+        void printAbout(){
+            cout << "Express Bus is a premium class bus equipped with movies you can enjoy on the way to your destination!" << endl;
+        }
+        ExpressBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0){
+            date = d;
+            busID = id;
+            departureLocation = _departLocation;
+            arrivalLocation = arrival;
+            departTime = _departTime;
+            plateNum = plate;
+            maxSeats = max;
+            filledSeats = filled;
+            price = p;
+        }
+};
+
+class SonarBus : public PremiumBus{
+    private : 
+        bool toilet;
+
+    public :
+        bool getToiletStatus(){
+            return toilet;
+        }
+        void setToilet(bool t){
+            toilet = t;
+        }
+        void printAbout(){
+            cout << "Sonar Bus is a premium class bus equipped with a toilet to take away all of your inconveniences!" << endl;
+        }
+        SonarBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, bool t = false){
+            date = d;
+            busID = id;
+            departureLocation = _departLocation;
+            arrivalLocation = arrival;
+            departTime = _departTime;
+            plateNum = plate;
+            maxSeats = max;
+            filledSeats = filled;
+            price = p;
+            toilet = t;
+        }
+};
+
 class Passenger{
     private:
         string name;
@@ -294,9 +406,9 @@ int main()
     int bookingId = 1;
     vector<Booking>bookings;
     vector<Bus>bus;
-    bus.push_back(Bus("31/5/2023","P100","Johor","Kuala Lumpur", "3:30pm","SYM187",40, 24, 35.50));
-    bus.push_back(Bus("2/6/2023","P101","Johor","Kelantan", "3:30pm","SYM187",45, 12, 70.50));
-    bus.push_back(Bus("1/6/2023","P102","Johor","Penang", "10:00am","SYM187",40, 24, 80.50));
+    bus.push_back(StandardBus("31/5/2023","P100","Johor","Kuala Lumpur", "3:30pm","SYM187",40, 24, 35.50, 3));
+    bus.push_back(ExpressBus("2/6/2023","P101","Johor","Kelantan", "3:30pm","SYM187",45, 12, 70.50));
+    bus.push_back(SonarBus("1/6/2023","P102","Johor","Penang", "10:00am","SYM187",40, 24, 80.50, true));
 
     main:
         system("cls");
