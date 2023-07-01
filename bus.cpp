@@ -167,7 +167,7 @@ class ExpressBus : public PremiumBus{
         void printAbout(){
             cout << "Express Bus is a premium class bus equipped with movies you can enjoy on the way to your destination!" << endl;
         }
-        ExpressBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, std::array<string,2> m = {"movie1", "movie2"}, string bt = "unknown"){
+        ExpressBus(string d="0/0/0",string id = "123", string _departLocation = "unknown", string arrival="unknown", string _departTime="00:00", string plate="", int max=0, int filled=0, double p=0, std::array<string,2> m = {"movie1", "movie 2"}, string bt = "unknown"){
             date = d;
             busID = id;
             departureLocation = _departLocation;
@@ -217,11 +217,17 @@ class Passenger{
         int age;
         string phoneNum;
         string ic;
-        string bookedId;
+        vector <string> bookedId;
     public:
         void setBookedid(string id){
-            bookedId = id;
+            bookedId.push_back(id);
         };
+        Passenger(string _name, int _age, string _phoneNum, string _ic){
+            name = _name;
+            age = _age;
+            phoneNum = _phoneNum;
+            ic = _ic;
+        }
 
 
 };
@@ -445,7 +451,7 @@ int userPage(){
 
 int main()
 {
-    Passenger passenger;
+    Passenger passenger("Adam", 20, "0123488816", "031111140000");
     Admin admin;
     int selection, busNum;
     int bookingId = 1;
